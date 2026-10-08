@@ -49,22 +49,6 @@
     }
   }
 
-  // Vidéos : lecture muette quand elles sont à l'écran, contrôles si l'utilisateur limite les animations
-  var calme = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var videos = $$("video[data-auto]");
-  if (calme || !("IntersectionObserver" in window)) {
-    videos.forEach(function(v){ v.controls = true; v.preload = "metadata"; });
-  } else {
-    var vobs = new IntersectionObserver(function(entrees){
-      entrees.forEach(function(e){
-        var v = e.target;
-        if (e.isIntersecting) { var p = v.play(); if (p && p.catch) p.catch(function(){ v.controls = true; }); }
-        else v.pause();
-      });
-    }, { threshold: .35 });
-    videos.forEach(function(v){ vobs.observe(v); });
-  }
-
   // Envoi vers Supabase
   function envoyer(lead){
     return fetch(SB_URL + "/rest/v1/leads", {
