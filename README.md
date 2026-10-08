@@ -47,3 +47,9 @@ Produit « Cycle Charpente – coaching 12 semaines » à 1 600 € créé dans 
 Il est **en mode test** : il n'est pas affiché sur le site. Le parcours reste candidature → appel → envoi du lien.
 Quand le compte Stripe sera en production, recréer le lien en mode réel ; il pourra alors aller dans
 le champ `lien` de l'offre `cycle-12` de `produits.js` si l'on veut proposer le paiement direct.
+
+## Vidéo de présentation (VSL) et résultats clients
+
+Tout se règle dans **`produits.js`**, en bas du fichier :
+- `window.SITE.vsl` : coller le lien YouTube (ou Vimeo, ou `video/vsl.mp4`). Le bloc vidéo apparaît en haut de la page « Le cycle ». Vide = caché.
+- `window.RESULTATS` : ajouter un bloc par client (modèle dans le fichier). La section « Ils l'ont fait » apparaît sur l'accueil et sur la page « Le cycle » dès qu'il y a un résultat. Uniquement des résultats réels, avec l'accord écrit du client.

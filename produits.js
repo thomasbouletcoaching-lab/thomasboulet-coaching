@@ -118,3 +118,37 @@ window.FAMILLES = {
   app: { titre: "Avancer avec l'app", intro: "TB my Coach, l'application que j'ai construite pour mes clients." },
   ressources: { titre: "Apprendre et t'outiller", intro: "Des guides et des outils pour avancer seul, avec une méthode solide." }
 };
+
+/* RÉGLAGES DU SITE
+   - vsl : lien de ta vidéo de présentation (YouTube, Vimeo, ou fichier .mp4 dans le dossier video/).
+           Laisse "" tant qu'elle n'est pas prête : le bloc vidéo reste caché.
+           Exemples : "https://www.youtube.com/watch?v=XXXXXXXXXXX" ou "video/vsl.mp4"
+*/
+window.SITE = {
+  vsl: ""
+};
+
+/* RÉSULTATS CLIENTS
+   La section « Ils l'ont fait » n'apparaît sur le site que lorsqu'il y a au moins un résultat ici.
+   N'ajoute que des résultats réels, avec l'accord écrit du client (prénom ou initiale, chiffres, photo).
+
+   Champs :
+   - prenom   : "Arthur" ou "A."
+   - profil   : "38 ans, cadre, 2 enfants"
+   - duree    : "12 semaines"
+   - chiffres : liste de résultats mesurés, ex. ["Squat : 80 → 110 kg", "Tour de taille : -6 cm"]
+   - citation : sa phrase, mot pour mot
+   - photo    : facultatif, ex. "img/clients/arthur.jpg" (avant/après, avec son accord)
+
+   Exemple à copier (retire les // au début des lignes) :
+   // {
+   //   prenom: "A.",
+   //   profil: "38 ans, cadre, 2 enfants",
+   //   duree: "12 semaines",
+   //   chiffres: ["Squat : 80 → 110 kg", "Tour de taille : -6 cm"],
+   //   citation: "Pour la première fois, j'ai tenu trois mois sans lâcher.",
+   //   photo: ""
+   // },
+*/
+window.RESULTATS = [
+];

@@ -49,6 +49,30 @@
     }
   }
 
+  // Vidéo de présentation (VSL), réglée dans produits.js
+  var vsl = (window.SITE && window.SITE.vsl || "").trim(), blocVsl = $("[data-vsl]");
+  if (vsl && blocVsl) {
+    var cadre = $("[data-vsl-cadre]", blocVsl), yt = vsl.match(/(?:youtu\.be\/|v=|shorts\/|embed\/)([\w-]{11})/), vm = vsl.match(/vimeo\.com\/(\d+)/);
+    if (yt) cadre.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + yt[1] + '?rel=0" title="Présentation du cycle Charpente" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen loading="lazy"></iframe>';
+    else if (vm) cadre.innerHTML = '<iframe src="https://player.vimeo.com/video/' + vm[1] + '" title="Présentation du cycle Charpente" allow="fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe>';
+    else cadre.innerHTML = '<video src="' + esc(vsl) + '" controls playsinline preload="metadata"></video>';
+    blocVsl.hidden = false;
+  }
+
+  // Résultats clients, réglés dans produits.js
+  var res = window.RESULTATS || [];
+  if (res.length) {
+    $$("[data-resultats]").forEach(function(bloc){
+      $("[data-resultats-liste]", bloc).innerHTML = res.map(function(r){
+        return '<article class="resultat">' + (r.photo ? '<img src="' + esc(r.photo) + '" alt="Avant et après de ' + esc(r.prenom) + '" loading="lazy">' : "") +
+          '<div class="resultat-corps"><ul class="resultat-chiffres">' + (r.chiffres || []).map(function(c){ return "<li>" + esc(c) + "</li>"; }).join("") + "</ul>" +
+          (r.citation ? "<blockquote>« " + esc(r.citation) + " »</blockquote>" : "") +
+          '<p class="resultat-qui"><b>' + esc(r.prenom) + "</b>" + (r.profil ? ", " + esc(r.profil) : "") + (r.duree ? " · " + esc(r.duree) : "") + "</p></div></article>";
+      }).join("");
+      bloc.hidden = false;
+    });
+  }
+
   // Envoi vers Supabase
   function envoyer(lead){
     return fetch(SB_URL + "/rest/v1/leads", {

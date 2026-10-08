@@ -149,6 +149,33 @@ p{margin:0 0 1em}
 .chiffres span{color:var(--gris);font-size:.92rem}
 @media (max-width:520px){.chiffres{grid-template-columns:1fr 1fr}}
 
+/* Vidéo de présentation */
+.bloc-vsl{padding-top:0;border-top:1px solid var(--trait-nuit)}
+.bloc-vsl .wrap{padding-top:clamp(32px,5vw,56px)}
+.vsl-cadre{max-width:900px;margin:0 auto;aspect-ratio:16/9;border-radius:16px;overflow:hidden;background:#000;box-shadow:0 30px 60px -30px rgba(0,0,0,.7)}
+.vsl-cadre iframe,.vsl-cadre video{width:100%;height:100%;border:0;display:block}
+.vsl-legende{max-width:900px;margin:16px auto 0;color:var(--acier);text-align:center}
+
+/* Résultats clients */
+.resultats{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+.resultat{background:var(--papier);border:1px solid var(--trait);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.bloc-blanc .resultat{background:var(--craie)}
+.resultat img{width:100%;aspect-ratio:4/5;object-fit:cover}
+.resultat-corps{padding:20px}
+.resultat-chiffres{list-style:none;margin:0 0 14px;padding:0;display:grid;gap:4px}
+.resultat-chiffres li{font-family:var(--titre);font-weight:700;font-size:1.35rem;line-height:1.15}
+.resultat blockquote{margin:0 0 12px;color:var(--encre);font-size:1.02rem}
+.resultat-qui{margin:0;color:var(--gris);font-size:.92rem}
+
+/* FAQ */
+.faq{max-width:820px;border-top:1px solid var(--trait)}
+.faq details{border-bottom:1px solid var(--trait)}
+.faq summary{cursor:pointer;list-style:none;padding:20px 40px 20px 0;font-weight:600;font-size:1.08rem;position:relative}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";position:absolute;right:6px;top:50%;transform:translateY(-50%);font-family:var(--titre);font-size:1.8rem;color:var(--bleu);line-height:1}
+.faq details[open] summary::after{content:"–"}
+.faq details p{margin:0 0 22px;color:var(--gris);max-width:68ch}
+
 /* Offres */
 .offres{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
 .offre{background:var(--papier);border:1px solid var(--trait);border-radius:14px;padding:24px;display:flex;flex-direction:column}
