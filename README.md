@@ -39,3 +39,11 @@ Candidatures, téléchargements du guide et inscriptions aux listes d'attente ar
 
 Modifier le fichier sur GitHub (icône crayon), « Commit changes » sur `main` : le site est à jour en 1 à 2 minutes.
 L'en-tête et le pied de page sont répétés dans chaque page : un changement de menu se fait dans toutes les pages.
+
+## Paiement (Stripe)
+
+Produit « Cycle Charpente – coaching 12 semaines » à 1 600 € créé dans Stripe, avec un lien de paiement
+(facture automatique, mention « TVA non applicable, art. 293 B du CGI »).
+Il est **en mode test** : il n'est pas affiché sur le site. Le parcours reste candidature → appel → envoi du lien.
+Quand le compte Stripe sera en production, recréer le lien en mode réel ; il pourra alors aller dans
+le champ `lien` de l'offre `cycle-12` de `produits.js` si l'on veut proposer le paiement direct.
