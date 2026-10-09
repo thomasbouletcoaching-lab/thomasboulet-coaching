@@ -31,8 +31,8 @@ window.CATALOGUE = [
       "Bilan de fin de cycle et suite à donner"
     ],
     prix: "790\u00a0€",
-    prixBarre: "1\u00a0600\u00a0€",
-    note: "Tarif fondateur pour les 10 premières places, puis 1 600 €. TVA non applicable, art. 293 B du CGI.",
+    prixApres: "1\u00a0600\u00a0€",
+    note: "Tarif de lancement jusqu'au 31 décembre 2026 (10 places au maximum). 1 600 € à partir de 2027. TVA non applicable, art. 293 B du CGI.",
     bouton: "Voir le cycle en détail",
     lien: "coaching.html"
   },
@@ -128,8 +128,8 @@ window.FAMILLES = {
 window.SITE = {
   vsl: "",
   // Places au tarif fondateur : augmente "prises" de 1 à chaque client qui paie.
-  // Quand prises = total, le site affiche automatiquement le prix normal (1 600 €).
-  fondateur: { total: 10, prises: 0 }
+  // Quand prises = total, ou après la date "fin", le site affiche automatiquement 1 600 €.
+  fondateur: { total: 10, prises: 0, fin: "2026-12-31T23:59:59+01:00" }
 };
 
 /* RÉSULTATS CLIENTS

@@ -118,7 +118,7 @@
 
   // Places au tarif fondateur, réglées dans produits.js
   var F = (window.SITE && window.SITE.fondateur) || { total: 0, prises: 0 };
-  var restantes = Math.max(0, (F.total || 0) - (F.prises || 0)), complet = restantes === 0;
+  var restantes = Math.max(0, (F.total || 0) - (F.prises || 0)), complet = restantes === 0 || (F.fin && Date.now() > Date.parse(F.fin));
   $$("[data-si-places]").forEach(function(el){ el.hidden = complet; });
   $$("[data-si-complet]").forEach(function(el){ el.hidden = !complet; });
   $$("[data-places-restantes]").forEach(function(el){ el.textContent = restantes; });
@@ -129,7 +129,7 @@
     el.innerHTML = h;
   });
   if (complet && window.CATALOGUE) window.CATALOGUE.forEach(function(o){
-    if (o.prixBarre) { o.prix = o.prixBarre; o.prixBarre = ""; o.note = "Le cycle de 12 semaines. TVA non applicable, art. 293 B du CGI."; }
+    if (o.prixApres) { o.prix = o.prixApres; o.prixApres = ""; o.note = "Le cycle de 12 semaines. TVA non applicable, art. 293 B du CGI."; }
   });
 
   // Page Offres : construite à partir de produits.js
