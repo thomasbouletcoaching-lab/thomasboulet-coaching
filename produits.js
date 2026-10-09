@@ -30,8 +30,9 @@ window.CATALOGUE = [
       "Bilan hebdomadaire commenté et messagerie avec moi",
       "Bilan de fin de cycle et suite à donner"
     ],
-    prix: "1 600 €",
-    note: "Le cycle de 12 semaines. TVA non applicable, art. 293 B du CGI.",
+    prix: "790\u00a0€",
+    prixBarre: "1\u00a0600\u00a0€",
+    note: "Tarif fondateur pour les 10 premières places, puis 1 600 €. TVA non applicable, art. 293 B du CGI.",
     bouton: "Voir le cycle en détail",
     lien: "coaching.html"
   },
@@ -125,7 +126,10 @@ window.FAMILLES = {
            Exemples : "https://www.youtube.com/watch?v=XXXXXXXXXXX" ou "video/vsl.mp4"
 */
 window.SITE = {
-  vsl: ""
+  vsl: "",
+  // Places au tarif fondateur : augmente "prises" de 1 à chaque client qui paie.
+  // Quand prises = total, le site affiche automatiquement le prix normal (1 600 €).
+  fondateur: { total: 10, prises: 0 }
 };
 
 /* RÉSULTATS CLIENTS

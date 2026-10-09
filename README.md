@@ -44,7 +44,9 @@ L'en-tête et le pied de page sont répétés dans chaque page : un changement d
 
 Produit « Cycle Charpente – coaching 12 semaines » à 1 600 € créé dans Stripe, avec un lien de paiement
 (facture automatique, mention « TVA non applicable, art. 293 B du CGI »).
-Il est **en mode test** : il n'est pas affiché sur le site. Le parcours reste candidature → appel → envoi du lien.
+Tarif fondateur : prix à 790 € sur le même produit, avec un lien de paiement **limité à 10 ventes** (Stripe le désactive tout seul après la 10e).
+Liens en mode test : 790 € https://buy.stripe.com/test_4gMbJ0axh4dy7hr3ML7Vm01 · 1 600 € https://buy.stripe.com/test_8x200ieNxcK41X75UT7Vm00
+Ils sont **en mode test** : ils ne sont pas affichés sur le site. Le parcours reste candidature → appel → envoi du lien.
 Quand le compte Stripe sera en production, recréer le lien en mode réel ; il pourra alors aller dans
 le champ `lien` de l'offre `cycle-12` de `produits.js` si l'on veut proposer le paiement direct.
 
@@ -53,3 +55,9 @@ le champ `lien` de l'offre `cycle-12` de `produits.js` si l'on veut proposer le 
 Tout se règle dans **`produits.js`**, en bas du fichier :
 - `window.SITE.vsl` : coller le lien YouTube (ou Vimeo, ou `video/vsl.mp4`). Le bloc vidéo apparaît en haut de la page « Le cycle ». Vide = caché.
 - `window.RESULTATS` : ajouter un bloc par client (modèle dans le fichier). La section « Ils l'ont fait » apparaît sur l'accueil et sur la page « Le cycle » dès qu'il y a un résultat. Uniquement des résultats réels, avec l'accord écrit du client.
+
+## Tarif fondateur (790 € pour les 10 premières places)
+
+Dans `produits.js`, `window.SITE.fondateur = { total: 10, prises: 0 }`.
+À chaque client qui paie le tarif fondateur, augmenter `prises` de 1 : le compteur de places se met à jour sur l'accueil et la page « Le cycle ».
+Quand `prises` atteint 10, le site affiche automatiquement le prix normal (1 600 €) partout.

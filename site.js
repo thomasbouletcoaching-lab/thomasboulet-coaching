@@ -116,6 +116,22 @@
     });
   });
 
+  // Places au tarif fondateur, réglées dans produits.js
+  var F = (window.SITE && window.SITE.fondateur) || { total: 0, prises: 0 };
+  var restantes = Math.max(0, (F.total || 0) - (F.prises || 0)), complet = restantes === 0;
+  $$("[data-si-places]").forEach(function(el){ el.hidden = complet; });
+  $$("[data-si-complet]").forEach(function(el){ el.hidden = !complet; });
+  $$("[data-places-restantes]").forEach(function(el){ el.textContent = restantes; });
+  $$("[data-places-total]").forEach(function(el){ el.textContent = F.total; });
+  $$("[data-places-mot]").forEach(function(el){ el.textContent = restantes > 1 ? "places fondateur restantes" : "place fondateur restante"; });
+  $$("[data-places-jauge]").forEach(function(el){
+    var h = ""; for (var k = 0; k < F.total; k++) h += '<i class="' + (k < F.prises ? "prise" : "") + '"></i>';
+    el.innerHTML = h;
+  });
+  if (complet && window.CATALOGUE) window.CATALOGUE.forEach(function(o){
+    if (o.prixBarre) { o.prix = o.prixBarre; o.prixBarre = ""; o.note = "Le cycle de 12 semaines. TVA non applicable, art. 293 B du CGI."; }
+  });
+
   // Page Offres : construite à partir de produits.js
   var cible = $("[data-catalogue]");
   if (cible && window.CATALOGUE) {
@@ -142,7 +158,7 @@
         }
         var corps = '<span class="statut ' + (o.statut === "dispo" ? "dispo" : "") + '">' + statuts[o.statut] + "</span>" +
           "<h3>" + esc(o.titre) + '</h3><p class="desc">' + esc(o.desc) + "</p>" + (pts ? "<ul>" + pts + "</ul>" : "");
-        var prix = (o.prix ? '<p class="prix">' + esc(o.prix) + "</p>" : "") + (o.note ? '<p class="note">' + esc(o.note) + "</p>" : "");
+        var prix = (o.prix ? '<p class="prix">' + esc(o.prix) + (o.prixBarre ? ' <s class="prix-barre">' + esc(o.prixBarre) + "</s>" : "") + "</p>" : "") + (o.note ? '<p class="note">' + esc(o.note) + "</p>" : "");
         html += o.phare
           ? '<article class="offre phare" id="' + esc(o.id) + '"><div>' + corps + "</div><div>" + prix + action + "</div></article>"
           : '<article class="offre" id="' + esc(o.id) + '">' + corps + prix + action + "</article>";

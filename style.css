@@ -176,6 +176,37 @@ p{margin:0 0 1em}
 .faq details[open] summary::after{content:"–"}
 .faq details p{margin:0 0 22px;color:var(--gris);max-width:68ch}
 
+/* Empilement de valeur */
+.pile{list-style:none;margin:0;padding:0;counter-reset:p;border-top:2px solid var(--encre)}
+.pile li{counter-increment:p;display:grid;grid-template-columns:2.4rem 1fr auto;gap:4px 18px;align-items:baseline;padding:18px 0;border-bottom:1px solid var(--trait)}
+.pile li::before{content:counter(p);font-family:var(--titre);font-weight:700;font-size:1.5rem;color:var(--bleu);line-height:1}
+.pile b{display:block;font-size:1.08rem}
+.pile span{color:var(--gris)}
+.pile em{font-style:normal;font-family:var(--titre);font-weight:700;font-size:1.15rem;white-space:nowrap;text-align:right;color:var(--encre)}
+@media (max-width:640px){.pile li{grid-template-columns:2rem 1fr}.pile em{grid-column:2;text-align:left;color:var(--bleu-fonce)}}
+
+/* Tarif fondateur */
+.tarif{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(28px,5vw,64px);align-items:start}
+.tarif-texte .intro{margin:16px 0 28px}
+.tarif-texte h3{color:#fff;margin-bottom:14px}
+.tarif-carte{background:#fff;color:var(--encre);border-radius:18px;padding:clamp(24px,4vw,36px);box-shadow:0 30px 60px -30px rgba(0,0,0,.6)}
+.tarif-etiquette{font-weight:600;color:var(--gris);margin:0 0 14px}
+.tarif-normal{margin:0;color:var(--gris);font-size:1.05rem}
+.tarif-normal s{text-decoration-thickness:2px;text-decoration-color:var(--ko)}
+.tarif-prix{font-family:var(--titre);font-weight:700;font-size:clamp(3.4rem,8vw,4.6rem);line-height:1;margin:4px 0 6px}
+.tarif-semaine{color:var(--gris);margin:0 0 22px}
+.places{margin:0 0 22px}
+.places-jauge{display:grid;grid-template-columns:repeat(10,1fr);gap:5px;margin-bottom:10px}
+.places-jauge i{height:10px;border-radius:3px;background:linear-gradient(90deg,var(--bleu),var(--cyan))}
+.places-jauge i.prise{background:var(--trait)}
+.places-texte{margin:0;font-size:.98rem}
+.places-texte b{font-family:var(--titre);font-size:1.3rem}
+.tarif-carte .btn{width:100%;text-align:center}
+.tarif-note{font-size:.85rem;color:var(--gris);margin:14px 0 0}
+@media (max-width:860px){.tarif{grid-template-columns:1fr}}
+.prix-barre{font-size:.55em;color:var(--gris);font-weight:600;margin-left:6px;text-decoration-thickness:2px;text-decoration-color:var(--ko)}
+.offre.phare .prix-barre{color:var(--acier)}
+
 /* Offres */
 .offres{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
 .offre{background:var(--papier);border:1px solid var(--trait);border-radius:14px;padding:24px;display:flex;flex-direction:column}
