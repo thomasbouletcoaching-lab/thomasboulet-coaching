@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Démo — TB my Coach, l'application de suivi de Thomas Boulet</title>
+<meta name="description" content="Essayez en direct l'application TB my Coach : carnet d'entraînement, suivi alimentaire, mesures et messagerie avec le coach. Démo interactive, données fictives.">
+<link rel="canonical" href="https://thomasbouletcoaching-lab.github.io/thomasboulet-coaching/app-demo.html">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0F1216">
+<link rel="icon" href="favicon.ico">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --chalk:#EEF1F4; --paper:#FFFFFF; --ink:#18212C; --soft:#5B6673; --line:#D7DDE3;
+  --blue:#1F4FB5; --yellow:#E9AE00; --red:#C8202B; --green:#1E8F4E; --steel:#8A96A3;
+  --input:#FFF7D6; --good:#D9F2E3; --warn:#FFF0C2;
+  --r:12px; --font:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --cond:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;background:#0F1216;color:var(--ink);font-family:var(--font);-webkit-text-size-adjust:100%}
+
+/* ---------- page autour du téléphone ---------- */
+.wrap{max-width:720px;margin:0 auto;padding:28px 20px 64px}
+.retour{display:inline-block;color:#C7CDD4;text-decoration:none;font-size:.9rem;margin-bottom:18px}
+.retour:hover{color:#fff}
+.intro{color:#EDEFF2;text-align:center}
+.intro .kicker{font-family:var(--cond);text-transform:uppercase;letter-spacing:.08em;font-size:.8rem;color:var(--yellow);margin:0 0 6px}
+.intro h1{font-family:var(--cond);font-weight:700;font-size:1.6rem;line-height:1.15;margin:0 0 10px}
+.intro p{font-size:.96rem;line-height:1.5;color:#C7CDD4;max-width:560px;margin:0 auto}
+.intro .note{font-size:.8rem;color:#8A96A3;max-width:560px;margin:16px auto 0}
+
+/* ---------- cadre téléphone ---------- */
+.phone{width:380px;max-width:100%;margin:28px auto 0;padding:7px;background:#000;border-radius:40px;box-shadow:0 30px 70px rgba(0,0,0,.45)}
+.phone-screen{position:relative;height:740px;border-radius:33px;overflow:hidden;background:var(--chalk);display:flex;flex-direction:column;font-size:16px}
+
+header.top{position:relative;z-index:5;background:var(--ink);color:var(--paper);padding:14px 14px 10px;flex:0 0 auto}
+header.top h1{font-family:var(--cond);font-weight:700;font-size:1.3rem;letter-spacing:.01em;margin:0;line-height:1.1}
+header.top .sub{font-size:.76rem;opacity:.75;margin-top:2px}
+.role{float:right;font-family:var(--cond);font-size:.78rem;border-radius:999px;padding:3px 10px;background:var(--yellow);color:#1B1B1B;font-weight:700}
+
+.phone-content{flex:1 1 auto;overflow-y:auto;padding:12px 12px 90px;-webkit-overflow-scrolling:touch}
+.view{display:none}
+.view.on{display:block}
+
+h2{font-family:var(--cond);font-weight:700;font-size:1.2rem;margin:4px 2px 8px}
+h3{font-family:var(--cond);font-weight:600;font-size:1.02rem;margin:10px 0 6px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:12px;margin:10px 0}
+.muted{color:var(--soft);font-size:.85rem}
+.small{font-size:.78rem}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+
+button{font:inherit;font-family:var(--cond);font-weight:600;font-size:.95rem;border:0;border-radius:10px;padding:9px 13px;background:var(--ink);color:var(--paper);cursor:pointer}
+button.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+button.ok{background:var(--green);color:#fff}
+button.sm{padding:6px 10px;font-size:.85rem}
+button:disabled{opacity:.45;cursor:default}
+
+.weeks{display:flex;gap:6px;overflow-x:auto;padding:4px 2px 10px;scroll-snap-type:x proximity}
+.wk{flex:0 0 auto;min-width:44px;text-align:center;border-radius:10px;border:2px solid var(--line);background:var(--paper);padding:5px 6px 4px;font-family:var(--cond);color:var(--ink)}
+.wk b{display:block;font-size:1rem;line-height:1}
+.wk span{font-size:.64rem;color:var(--soft)}
+.wk.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.wk.on span{color:var(--paper);opacity:.8}
+
+.kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.kpi{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:8px}
+.kpi b{display:block;font-family:var(--cond);font-size:1.4rem;line-height:1.1}
+.kpi span{font-size:.7rem;color:var(--soft)}
+
+.chip{display:inline-block;font-family:var(--cond);font-size:.76rem;border-radius:999px;padding:2px 9px;background:var(--chalk);border:1px solid var(--line);margin:2px 4px 2px 0;color:var(--ink)}
+
+table.sets{width:100%;margin-top:6px;border-collapse:collapse}
+table.sets th{font-size:.68rem;text-transform:uppercase;color:var(--soft);text-align:left;padding:3px 2px}
+table.sets td{padding:5px 2px;vertical-align:middle;font-size:.9rem}
+table.sets tr.done td{background:var(--good)}
+.chk{width:34px;height:32px;padding:0;background:var(--chalk);color:var(--soft);border:1px solid var(--line);font-family:var(--cond)}
+.chk.on{background:var(--green);color:#fff;border-color:var(--green)}
+
+.mb{margin:9px 0}
+.mb-h{display:flex;justify-content:space-between;font-size:.78rem;color:var(--soft)}
+.mb-h b{color:var(--ink);font-family:var(--cond);font-size:.96rem}
+.mb-t{height:8px;background:var(--chalk);border-radius:99px;overflow:hidden}
+.mb-t i{display:block;height:100%;background:var(--green);border-radius:99px}
+.meal{border-left:6px solid var(--line);padding-left:8px}
+.meal.done{border-left-color:var(--green)}
+
+.subnav{display:flex;gap:6px;margin-bottom:8px}
+.subnav button{flex:1}
+.subnav button.off{background:transparent;color:var(--soft);border:1px solid var(--line)}
+
+nav.tabs{position:absolute;left:0;right:0;bottom:0;z-index:30;background:var(--paper);border-top:1px solid var(--line);display:flex;padding:6px 2px}
+nav.tabs button{flex:1;background:transparent;color:var(--soft);padding:6px 1px;border-radius:8px;font-size:.78rem;font-weight:600}
+nav.tabs button.on{color:var(--ink);background:var(--chalk)}
+
+/* bilan, 1RM, chat */
+textarea{font:inherit;font-size:.92rem;color:var(--ink);background:var(--input);border:1px solid var(--line);border-radius:8px;padding:8px;width:100%;min-height:60px}
+input[type="number"]{font:inherit;font-size:16px;color:var(--ink);background:var(--input);border:1px solid var(--line);border-radius:8px;padding:8px;width:100%}
+label.f{display:block;font-size:.76rem;color:var(--soft);margin-bottom:10px}
+.toggle{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-top:1px solid var(--line)}
+.toggle:first-child{border-top:0}
+.sw{width:42px;height:24px;border-radius:999px;background:var(--line);position:relative;border:0;padding:0;cursor:pointer}
+.sw i{position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:#fff;transition:left .15s}
+.sw.on{background:var(--green)}
+.sw.on i{left:20px}
+
+.chat-overlay{position:absolute;inset:0;background:rgba(0,0,0,.4);z-index:40;display:none}
+.chat-overlay.on{display:block}
+.chat-sheet{position:absolute;left:0;right:0;bottom:0;height:78%;background:var(--chalk);border-radius:20px 20px 0 0;display:flex;flex-direction:column}
+.chat-head{background:var(--ink);color:var(--paper);padding:12px 14px;border-radius:20px 20px 0 0;display:flex;justify-content:space-between;align-items:center}
+.chat-head b{font-family:var(--cond);font-size:1.05rem}
+.chat-head button{background:transparent;color:var(--paper);border:1px solid rgba(255,255,255,.4);padding:4px 10px}
+.chat-body{flex:1;overflow-y:auto;padding:10px 12px}
+.bubble{max-width:78%;padding:8px 11px;border-radius:14px;margin:6px 0;font-size:.9rem;line-height:1.35}
+.bubble.coach{background:var(--paper);border:1px solid var(--line);border-bottom-left-radius:3px}
+.bubble.client{background:var(--blue);color:#fff;margin-left:auto;border-bottom-right-radius:3px}
+.chat-foot{padding:8px;border-top:1px solid var(--line);display:flex;gap:6px;background:var(--paper)}
+.chat-foot input{flex:1;font:inherit;font-size:.92rem;border:1px solid var(--line);border-radius:999px;padding:9px 13px;background:var(--chalk)}
+.chat-note{font-size:.68rem;color:var(--soft);text-align:center;padding:4px 10px 8px;background:var(--paper)}
+.typing{font-size:.8rem;color:var(--soft);font-style:italic;padding:4px 2px}
+
+svg.chart{width:100%;height:auto}
+.foot-note{max-width:560px;margin:24px auto 0;color:#8A96A3;font-size:.78rem;line-height:1.5;text-align:center}
+.foot-note a{color:#C7CDD4}
+.cta-row{display:flex;justify-content:center;gap:10px;margin:22px 0 0;flex-wrap:wrap}
+.cta{font-family:var(--cond);font-weight:700;font-size:1rem;border-radius:999px;padding:12px 22px;text-decoration:none;display:inline-block}
+.cta.primary{background:var(--yellow);color:#1B1B1B}
+.cta.ghost{background:transparent;color:#EDEFF2;border:1px solid rgba(255,255,255,.35)}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <a class="retour" href="methode.html">&larr; Retour au site</a>
+  <div class="intro">
+    <p class="kicker">🧪 Démo interactive</p>
+    <h1>L'application que j'utilise pour suivre mes clients</h1>
+    <p>Programme, carnet d'entraînement, suivi alimentaire, mesures et messagerie avec moi : voici ce que reçoit un client du cycle de 12 semaines. Explorez l'appli ci-dessous avec un profil fictif, « Julien ».</p>
+    <p class="note">Démo autonome : aucune donnée saisie ici n'est enregistrée, transmise ou visible par qui que ce soit. « Julien » est un profil 100&nbsp;% fictif, utilisé uniquement pour illustrer le fonctionnement de l'application.</p>
+  </div>
+
+  <div class="phone">
+    <div class="phone-screen">
+      <header class="top">
+        <span class="role">DÉMO</span>
+        <h1>TB my Coach</h1>
+        <div class="sub">Julien · Semaine 5/12 · Bloc Accumulation</div>
+      </header>
+
+      <div class="phone-content">
+
+        <!-- SEMAINE -->
+        <div class="view on" id="v-semaine">
+          <h2>Cette semaine</h2>
+          <div class="weeks" id="weeks"></div>
+          <div class="kpis">
+            <div class="kpi"><b>3/3</b><span>séances faites</span></div>
+            <div class="kpi"><b>5/12</b><span>semaines</span></div>
+          </div>
+          <div class="card">
+            <h3>Prochaine séance</h3>
+            <p class="small muted">Vendredi · Haut du corps — Force</p>
+            <button class="sm" data-goto="v-carnet">Voir la séance</button>
+          </div>
+          <div class="card">
+            <h3>📈 Mes progrès</h3>
+            <p class="small muted">Records personnels et objectifs du bloc en cours.</p>
+            <button class="ghost sm" data-goto="v-objectifs">Voir mes progrès</button>
+          </div>
+        </div>
+
+        <!-- CARNET -->
+        <div class="view" id="v-carnet">
+          <h2>Carnet</h2>
+          <div class="card ses">
+            <h3>Haut du corps — Force</h3>
+            <p class="small muted">Séance du jour · bloc Accumulation</p>
+            <table class="sets" id="sets-table"></table>
+          </div>
+          <div class="card">
+            <h3>Bilan de la semaine</h3>
+            <label class="f">Ce qui a bien marché
+              <textarea readonly>Les 3 séances ont été faites à 100 %. Les charges prévues ont pu être tenues sur toutes les séries.</textarea>
+            </label>
+            <label class="f">Pour la semaine prochaine
+              <textarea readonly>Fatigue un peu plus présente en fin de semaine — on garde les mêmes charges et on surveille le sommeil.</textarea>
+            </label>
+            <p class="small muted">En conditions réelles, ce bilan est écrit par le client puis lu par le coach pour ajuster le programme.</p>
+          </div>
+        </div>
+
+        <!-- SUIVI -->
+        <div class="view" id="v-suivi">
+          <h2>Suivi</h2>
+          <div class="subnav">
+            <button id="sub-nutrition">Nutrition</button>
+            <button class="off" id="sub-mesures">Mesures</button>
+          </div>
+
+          <div id="pane-nutrition">
+            <div class="card">
+              <div class="mb">
+                <div class="mb-h"><span>Calories</span><b>1 850 / 2 100 kcal</b></div>
+                <div class="mb-t"><i style="width:88%"></i></div>
+              </div>
+              <div class="mb">
+                <div class="mb-h"><span>Protéines</span><b>128 / 150 g</b></div>
+                <div class="mb-t"><i style="width:85%"></i></div>
+              </div>
+            </div>
+            <div class="card meal done">
+              <h3>🍳 Petit-déjeuner</h3>
+              <p class="small muted">Fromage blanc, flocons d'avoine, fruits — noté ✓</p>
+            </div>
+            <div class="card meal done">
+              <h3>🍗 Déjeuner</h3>
+              <p class="small muted">Poulet, riz, légumes — noté ✓</p>
+            </div>
+            <div class="card meal">
+              <h3>🥗 Dîner</h3>
+              <p class="small muted">Pas encore noté</p>
+              <button class="sm" disabled>Ajouter (désactivé en démo)</button>
+            </div>
+          </div>
+
+          <div id="pane-mesures" style="display:none">
+            <div class="card">
+              <h3>Poids — 5 dernières semaines <span class="chip">exemple fictif</span></h3>
+              <svg class="chart" viewBox="0 0 320 120" aria-label="Évolution du poids de Julien sur 5 semaines, exemple fictif">
+                <polyline points="20,100 90,78 160,56 230,42 300,20" fill="none" stroke="#1F4FB5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                <g fill="#1F4FB5">
+                  <circle cx="20" cy="100" r="3.5"/><circle cx="90" cy="78" r="3.5"/><circle cx="160" cy="56" r="3.5"/><circle cx="230" cy="42" r="3.5"/><circle cx="300" cy="20" r="3.5"/>
+                </g>
+                <g font-family="Barlow Condensed" font-size="10" fill="#5B6673">
+                  <text x="12" y="114">S1</text><text x="82" y="114">S2</text><text x="152" y="114">S3</text><text x="222" y="114">S4</text><text x="290" y="114">S5</text>
+                </g>
+              </svg>
+              <p class="small muted">82,4 → 81,3 kg. Une tendance, pas un résultat garanti : elle dépend de chaque personne.</p>
+            </div>
+            <div class="card">
+              <h3>Tour de taille</h3>
+              <p class="small muted">Dernière mesure : 86 cm (semaine 5), en léger recul depuis la semaine 1 (88 cm).</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- OBJECTIFS -->
+        <div class="view" id="v-objectifs">
+          <h2>Objectifs</h2>
+          <div class="card">
+            <h3>Objectif du bloc en cours</h3>
+            <p class="small muted">Consolider la technique et la régularité avant d'augmenter les charges — pas de date ni de chiffre figé, le rythme dépend de la récupération de Julien.</p>
+          </div>
+          <div class="card">
+            <h3>Records personnels <span class="chip">exemples fictifs</span></h3>
+            <p class="small">💪 Développé couché — 3×5 @ 80&nbsp;kg</p>
+            <p class="small">🏋️ Squat — 5×5 @ 100&nbsp;kg</p>
+            <p class="small">🦵 Soulevé de terre — 1×5 @ 120&nbsp;kg</p>
+          </div>
+        </div>
+
+        <!-- OUTILS -->
+        <div class="view" id="v-outils">
+          <h2>Outils</h2>
+          <div class="card">
+            <h3>🧮 Estimation de charge max (1RM)</h3>
+            <p class="small muted">Formule d'Epley, à titre indicatif — jamais une cible à atteindre à tout prix.</p>
+            <label class="f">Poids soulevé (kg)<input type="number" id="rm-w" value="80" min="1"></label>
+            <label class="f">Répétitions effectuées<input type="number" id="rm-r" value="5" min="1" max="12"></label>
+            <button id="rm-calc">Calculer</button>
+            <p class="card" id="rm-out" style="display:none;margin-top:10px"></p>
+          </div>
+        </div>
+
+        <!-- COMPTE -->
+        <div class="view" id="v-compte">
+          <h2>Compte</h2>
+          <div class="card">
+            <h3>Julien</h3>
+            <p class="small muted">julien@exemple.fr (fictif) · inscrit depuis 5 semaines</p>
+          </div>
+          <div class="card">
+            <div class="toggle"><span class="small">Rappel de séance</span><button class="sw on" id="sw1"><i></i></button></div>
+            <div class="toggle"><span class="small">Rappel de bilan du dimanche</span><button class="sw on" id="sw2"><i></i></button></div>
+          </div>
+          <div class="card">
+            <button id="open-chat">💬 Écrire à Thomas</button>
+          </div>
+          <div class="card">
+            <button class="ghost sm" disabled>Télécharger mes données (désactivé en démo)</button>
+          </div>
+          <div class="card">
+            <button class="ghost sm" id="reset-demo">Réinitialiser la démo</button>
+          </div>
+        </div>
+
+      </div>
+
+      <nav class="tabs" id="tabs">
+        <button data-goto="v-semaine" class="on">Semaine</button>
+        <button data-goto="v-carnet">Carnet</button>
+        <button data-goto="v-suivi">Suivi</button>
+        <button data-goto="v-objectifs">Objectifs</button>
+        <button data-goto="v-outils">Outils</button>
+        <button data-goto="v-compte">Compte</button>
+      </nav>
+
+      <!-- MESSAGERIE -->
+      <div class="chat-overlay" id="chat-overlay">
+        <div class="chat-sheet">
+          <div class="chat-head">
+            <b>Thomas (coach)</b>
+            <button id="close-chat">Fermer</button>
+          </div>
+          <div class="chat-body" id="chat-body">
+            <div class="bubble coach">Salut Julien 👋 Comment s'est passée la séance d'hier ?</div>
+            <div class="bubble client">Hyper bien, j'ai tenu les charges prévues sur les 4 séries 💪</div>
+            <div class="bubble coach">Nickel, on garde ce rythme cette semaine. N'oublie pas ton bilan dimanche.</div>
+          </div>
+          <div class="chat-note">Démo — conversation simulée, rien n'est réellement envoyé. Dans l'application, les messages (texte, photo, vidéo, vocal) arrivent vraiment chez ton coach.</div>
+          <div class="chat-foot">
+            <input type="text" id="chat-input" placeholder="Écrire un message…" maxlength="200">
+            <button id="chat-send">Envoyer</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="cta-row">
+    <a class="cta primary" href="https://calendly.com/thomboulet/30min" rel="noopener">Réserver un appel découverte</a>
+    <a class="cta ghost" href="coaching.html">Voir l'offre de coaching</a>
+  </div>
+
+  <p class="foot-note">
+    Démo interactive à but illustratif, sans lien avec l'application réelle ni avec un compte client existant. Le profil « Julien » et toutes les données affichées (séances, mesures, messages) sont fictifs. Aucune information saisie dans cette page n'est enregistrée ni transmise.
+    Politique de confidentialité : <a href="https://thomasbouletcoaching-lab.github.io/tb-coaching-app/confidentialite.html">consulter</a>.
+  </p>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  function showView(id){
+    document.querySelectorAll(".view").forEach(function(v){ v.classList.toggle("on", v.id===id); });
+    document.querySelectorAll("#tabs button").forEach(function(b){ b.classList.toggle("on", b.dataset.goto===id); });
+    var content = document.querySelector(".phone-content");
+    if (content) content.scrollTop = 0;
+  }
+  document.querySelectorAll("[data-goto]").forEach(function(b){
+    b.addEventListener("click", function(){ showView(b.dataset.goto); });
+  });
+
+  // Semaine : bloc de 12 semaines, semaine 5 en cours (données fictives)
+  var weeksEl = document.getElementById("weeks");
+  var phases = ["Accumulation","Accumulation","Accumulation","Accumulation","Accumulation","Accumulation","Transmutation","Transmutation","Transmutation","Réalisation","Réalisation","Deload"];
+  var html = "";
+  for (var i=1;i<=12;i++){
+    html += '<div class="wk' + (i===5 ? " on" : "") + '"><b>' + i + '</b><span>' + phases[i-1].slice(0,4) + '</span></div>';
+  }
+  weeksEl.innerHTML = html;
+
+  // Carnet : table de séries avec cases à cocher
+  var exos = [
+    {n:"Développé couché", presc:"4×6 @ 75 kg"},
+    {n:"Tirage horizontal", presc:"4×8 @ 60 kg"},
+    {n:"Développé militaire", presc:"3×8 @ 40 kg"},
+    {n:"Curl biceps", presc:"3×12 @ 14 kg"}
+  ];
+  var setsTable = document.getElementById("sets-table");
+  var rows = "<tr><th>Exercice</th><th>Prescrit</th><th>Fait</th></tr>";
+  exos.forEach(function(ex, idx){
+    rows += '<tr id="row-' + idx + '" class="' + (idx < 2 ? "done" : "") + '"><td>' + ex.n + '</td><td>' + ex.presc + '</td>' +
+            '<td><button class="chk' + (idx < 2 ? " on" : "") + '" data-row="' + idx + '">✓</button></td></tr>';
+  });
+  setsTable.innerHTML = rows;
+  setsTable.addEventListener("click", function(e){
+    var btn = e.target.closest(".chk");
+    if (!btn) return;
+    btn.classList.toggle("on");
+    document.getElementById("row-" + btn.dataset.row).classList.toggle("done");
+  });
+
+  // Suivi : sous-onglets Nutrition / Mesures
+  var subN = document.getElementById("sub-nutrition"), subM = document.getElementById("sub-mesures");
+  var paneN = document.getElementById("pane-nutrition"), paneM = document.getElementById("pane-mesures");
+  function setSub(which){
+    var isN = which === "n";
+    paneN.style.display = isN ? "" : "none";
+    paneM.style.display = isN ? "none" : "";
+    subN.classList.toggle("off", !isN);
+    subM.classList.toggle("off", isN);
+  }
+  subN.addEventListener("click", function(){ setSub("n"); });
+  subM.addEventListener("click", function(){ setSub("m"); });
+
+  // Outils : estimation 1RM (formule d'Epley)
+  document.getElementById("rm-calc").addEventListener("click", function(){
+    var w = parseFloat(document.getElementById("rm-w").value) || 0;
+    var r = parseFloat(document.getElementById("rm-r").value) || 1;
+    var out = document.getElementById("rm-out");
+    if (w <= 0 || r <= 0){ out.style.display = "none"; return; }
+    var rm = Math.round(w * (1 + r / 30));
+    out.textContent = "Estimation : ~" + rm + " kg sur une répétition. Une estimation, pas une charge à tester seul sans supervision.";
+    out.style.display = "";
+  });
+
+  // Compte : interrupteurs visuels, reset
+  ["sw1","sw2"].forEach(function(id){
+    document.getElementById(id).addEventListener("click", function(){ this.classList.toggle("on"); });
+  });
+  document.getElementById("reset-demo").addEventListener("click", function(){
+    document.getElementById("chat-body").innerHTML =
+      '<div class="bubble coach">Salut Julien 👋 Comment s\'est passée la séance d\'hier ?</div>' +
+      '<div class="bubble client">Hyper bien, j\'ai tenu les charges prévues sur les 4 séries 💪</div>' +
+      '<div class="bubble coach">Nickel, on garde ce rythme cette semaine. N\'oublie pas ton bilan dimanche.</div>';
+    showView("v-semaine");
+  });
+
+  // Messagerie scénarisée — aucune donnée n'est envoyée nulle part
+  var overlay = document.getElementById("chat-overlay");
+  document.getElementById("open-chat").addEventListener("click", function(){ overlay.classList.add("on"); });
+  document.getElementById("close-chat").addEventListener("click", function(){ overlay.classList.remove("on"); });
+
+  var replies = [
+    "Merci pour ton message, je regarde ça et je te réponds dans la journée.",
+    "Bien reçu 👍 On en reparle à ta prochaine séance si besoin.",
+    "Noté, je l'intègre à ton suivi de la semaine."
+  ];
+  function sendChat(){
+    var input = document.getElementById("chat-input");
+    var text = input.value.trim();
+    if (!text) return;
+    var body = document.getElementById("chat-body");
+    var b = document.createElement("div");
+    b.className = "bubble client";
+    b.textContent = text;
+    body.appendChild(b);
+    input.value = "";
+    body.scrollTop = body.scrollHeight;
+
+    var typing = document.createElement("div");
+    typing.className = "typing";
+    typing.textContent = "Thomas écrit…";
+    body.appendChild(typing);
+    body.scrollTop = body.scrollHeight;
+
+    setTimeout(function(){
+      typing.remove();
+      var reply = document.createElement("div");
+      reply.className = "bubble coach";
+      reply.textContent = replies[Math.floor(Math.random() * replies.length)];
+      body.appendChild(reply);
+      body.scrollTop = body.scrollHeight;
+    }, 900);
+  }
+  document.getElementById("chat-send").addEventListener("click", sendChat);
+  document.getElementById("chat-input").addEventListener("keydown", function(e){
+    if (e.key === "Enter") sendChat();
+  });
+})();
+</script>
+</body>
+</html>
